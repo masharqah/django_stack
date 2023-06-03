@@ -1,0 +1,16 @@
+h1 {
+    margin: 20px auto;
+    width: 40%;
+    border: 3px solid green;
+    padding: auto;
+    text-align: center;
+
+}
+
+h3 {
+    margin: auto;
+    width: 40%;
+    border: 3px solid blue;
+    padding: auto;
+    text-align: center;
+}
