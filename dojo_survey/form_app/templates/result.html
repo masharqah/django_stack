@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <h1>here are your form entries</h1>
+    <h2>Name entered:  {{ request.session.name }}</h2>
+    <h2>Location :    {{ request.session.location }}</h2>
+    <h2>Favorite language entered:  {{ request.session.language }}</h2>
+    <h2>Comment:  {{ request.session.comment }}</h2>
+</body>
+</html>
