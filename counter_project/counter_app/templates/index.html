@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Counter</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <div class="d-flex justify-content-center">
+    <h1>Session Counter: {{ count }}</h1>
+    <form method="POST" action="/">
+        {% csrf_token %}
+        <input type="hidden" name="increment" value="1">
+        <button type="submit">Increment by 1</button>
+    </form>
+    <form method="POST" action="/">
+        {% csrf_token %}
+        <input type="hidden" name="increment" value="2">
+        <button type="submit">+2</button>
+    </form>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <button type="submit" name="reset">Reset Counter</button>
+    </form>
+</div>
+</body>
+</html>
