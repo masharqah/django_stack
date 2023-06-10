@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+
 def index(request):
     count=request.session.get('counter', 0)
     
