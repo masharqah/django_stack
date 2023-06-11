@@ -17,6 +17,7 @@ def reset(request):
     request.session['counter']=int(0)
     request.session['target']=int(0)
     request.session['gold']=int(0)
+    request.session['tracker']=[]
     return redirect ('/')
 
 def proccess_money(request):
