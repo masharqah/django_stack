@@ -105,7 +105,7 @@
     {% endif %}
 <!-- Game Result -->
 
-    {% if request.session.counter == 0 and request.session.gold >= request.session.target %}
+  {% if request.session.counter == 0 and request.session.gold != 0 and request.session.gold >= request.session.target %}
     <div class="alert alert-warning" role="alert">
         Congratulations you WON! press restart to play again
         <form method="POST" action="reset">
