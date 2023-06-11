@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+  </head>
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <h4 class="navbar-brand">Ninja Gold <span class="badge bg-secondary">  {{request.session.gold}}   </span> </h4> 
+            <h4 class="navbar-brand">Your available moves:  <span class="badge bg-secondary"> {{request.session.counter}}  </span> </h4>
+            <h4 class="navbar-brand">target  <span class="badge bg-secondary"> {{request.session.target}} </span> </h4>
+            {%if not request.session.counter or request.session.counter == 0 %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Set the Challenge
+              </button>
+            {%endif%}
+        </div>
+    </nav>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">What's your challenge?</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="enterform">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="number" name="target" class="form-control" placeholder="how much gold do want to collect?" >
+                </div>
+                <div class="form-group">
+                
+                  <input name="counter" type="number" class="form-control" placeholder="by how many moves?" >
+                </div>
+                <button type="submit" class="btn btn-primary">Start Game</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Game interface -->
+    {% if request.session.counter > 0 %}
+    <div class="d-flex justify-content-around">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Farm</h5>
+                <p class="card-text">Earns 10 - 20 Golds</p>
+                <form action="proccess_money" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="farm" />
+                    <input type="submit" value="Submit" class="btn btn-success">
+                </form>         
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Cave</h5>
+                <p class="card-text">Earns 5 -10 Golds</p>
+                <form action="proccess_money" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="cave" />
+                    <input type="submit" value="Submit" class="btn btn-success">
+                </form>         
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">House</h5>
+                <p class="card-text">Earns 2 - 5 Golds</p>
+                <form action="proccess_money" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="house" />
+                    <input type="submit" value="Submit" class="btn btn-success">
+                </form>         
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Casino</h5>
+                <p class="card-text">You Can Earn or lose form 0-50 Golds</p>
+                <form action="proccess_money" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="building" value="casino" />
+                    <input type="submit" value="Submit" class="btn btn-success">                
+                </form>         
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container text-center " style="width: 600; height: 200px; overflow: scroll;">
+    {% for message in request.session.tracker%}
+    {% if "lost" in message %}
+    <div class="alert alert-danger" role="alert">{{message}}</div>
+    {% else %}
+    <div class="alert alert-success" role="alert">{{message}}</div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    {% endif %}
+<!-- Game Result -->
+
+    {% if request.session.counter == 0 and request.session.gold >= request.session.target %}
+    <div class="alert alert-warning" role="alert">
+        Congratulations you WON! press restart to play again
+        <form method="POST" action="reset">
+          {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Restart Game</button>
+        </form>
+      </div>
+    {% elif request.session.counter == 0 and request.session.gold < request.session.target %}
+    <div class="alert alert-light" role="alert">
+      you didn't secceed in collecting your gold, try again
+      <form method="POST" action="reset">
+        {% csrf_token %}
+          <button type="submit" class="btn btn-warning">Restart Game</button>
+      </form>
+    </div>
+    {% endif %}
+
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JS (jQuery and Popper.js are required dependencies) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
