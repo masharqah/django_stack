@@ -1,0 +1,54 @@
+from django.db import models
+
+# Create your models here.
+
+
+class Dojos(models.Model):
+    name = models.CharField(max_length=255)
+    city= models.CharField(max_length=255)
+    state = models.CharField(max_length=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Ninjas(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    dojo = models.ForeignKey(Dojos, related_name="ninjas", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+python3 manage.py migrate
+python3 manage.py makemigrations
+Pyton3 manage.py shell
+from dojos_ninjas_app.models import Dojos, Ninjas
+>>> first_dojo = Dojos.objects.create(name="Science", city="Ramallah", state="PS")
+second_dojo = Dojos.objects.create(name="arts", city="Jerusalem", state="PS")
+
+third_dojo = Dojos.objects.create(name="fashion", city="Hebron", state="PS")
+
+Dojos.objects.all().delete()
+
+first_dojo = Dojos.objects.create(name="Science", city="Ramallah", state="PS")
+second_dojo = Dojos.objects.create(name="arts", city="Jerusalem", state="PS")
+third_dojo = Dojos.objects.create(name="fashion", city="Hebron", state="PS")
+
+
+first_ninja=Ninjas.objects.create(first_name = "Muhammad", last_name="Masharqah" ,dojo =first_dojo )
+second_ninja=Ninjas.objects.create(first_name = "Ahmad", last_name="nowaer" ,dojo =first_dojo )
+third_ninja=Ninjas.objects.create(first_name = "James", last_name="kowerr" ,dojo =first_dojo )
+
+first_ninja2=Ninjas.objects.create(first_name = "Samih", last_name="Sddgf" ,dojo =second_dojo )
+second_ninja2=Ninjas.objects.create(first_name = "Jeans", last_name="fruits" ,dojo =second_dojo )
+third_ninja2=Ninjas.objects.create(first_name = "Oliver", last_name="krwsag" ,dojo =second_dojo )
+
+first_ninja3=Ninjas.objects.create(first_name = "Farah", last_name="chords" ,dojo =third_dojo )
+second_ninja3=Ninjas.objects.create(first_name = "Amr", last_name="vegss" ,dojo =third_dojo )
+third_ninja3=Ninjas.objects.create(first_name = "Sam", last_name="muyds" ,dojo =third_dojo )
+
+first_dojo.ninjas.all()
+
+third_dojo.ninjas.all()
+
+third_ninja3.dojo.name
+
+new_dojo= Dojos.objects.create(name="Data Science", city="Nablus", state="PS" ,desc ="New created after updating columns")
