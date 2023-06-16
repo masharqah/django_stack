@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojos and ninjas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+<body>
+   
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="container">
+          <h2>Add Dojo</h2>
+          <p>
+            <form method="post" action="/add_entries">
+                {% csrf_token %}
+                <input type="hidden" name="which_form" value="add_dojo">
+                <div class="mb-3">
+                  <label for="Dojo" class="form-label">Dojo name</label>
+                  <input type="text" class="form-control" id="Dojo" name="name" >
+                </div>
+                <div class="mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class= "form-control" id="city" name="city">
+                </div>
+                <div class="mb-3">
+                    <label for="state" class="form-label">State</label>
+                    <input type="text" class= "form-control" id="state" name="state" maxlength="2">
+                  </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="container">
+          <h2>Add ninja</h2>
+          <p>
+            <p>
+                <form method="POST" action="/add_entries">
+                    {% csrf_token %}
+                    <input type="hidden" name="which_form" value="add_ninja">
+                    <div class="mb-3">
+                      <label for="first_name" class="form-label">First Name</label>
+                      <input type="text" class="form-control" id="first_name" name="first_name" >
+                    </div>
+                    <div class="mb-3">
+                      <label for="last_name" class="form-label">Last Name</label>
+                      <input type="text" class= "form-control" id="last_name" name="last_name">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                        <select class="form-select" id="specificSizeSelect" name = "dojo">
+                          <option selected>Select Dojo</option>
+                          {% for dojo in dojos %}
+                          <option value= "{{dojo.id}}" >{{dojo.name}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    
+                  </form>
+                    </div>
+              </p>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul>
+      {% for dojo in dojos %}
+      <li>{{dojo.name}}
+        <form method="post" action="/del_dojo">
+          {% csrf_token %}
+        <input type="hidden" name="dojo_name" value="{{dojo.id}}" >
+        <button class="btn" type =submit ><i class="fa fa-trash"></i></button>
+      </form>
+      </li> 
+        <ol>
+            {% for ninja in ninjas %}
+            {% if ninja.dojo_id == dojo.id %}
+            <li>{{ninja.first_name}}  {{ninja.last_name}}</li>
+            {% endif %}
+            {% endfor %}
+        </ol>
+      {% endfor %}
+  </ul>
+</body>
+</html>
