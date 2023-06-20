@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+<body>  
+<div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="container">
+          <h2>Add Author</h2>
+            <p>
+                <form action="add_author" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="book_title" class="form-label">First Name</label>
+                      <input type="text" class="form-control" name="first_name" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="book_title" class="form-label">Last name</label>
+                        <input type="text" class="form-control" name="last_name" >
+                      </div>
+
+                    <div class="mb-2">
+                    <div class="form-floating">
+                    <textarea class="form-control" placeholder="notes" name="notes"></textarea>
+                    <label for="floatingTextarea2">Notes</label>
+                    </div>                    
+                    <input type="submit" value="submit">
+                  </form>
+              </p>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-5">
+        <div class="container">
+          <h2>Books</h2>
+          <table class="table">
+              <thead>
+                  <th>id</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Notes</th>
+                  <th>Action</th>
+              </thead>
+              {% for author in authors%}
+              <tr>
+                  <td>{{author.id}}</td>
+                  <td>{{author.first_name}}</td>
+                  <td>{{author.last_name}}</td>
+                  <td>{{book.notes}}</td>
+                  <td><a href="authors/{{author.id}}">View</a></td>
+              </tr>
+              {% endfor %}
+          </table>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
