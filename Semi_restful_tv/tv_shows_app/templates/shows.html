@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shows table</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+
+    <h1>Shows</h1>
+
+    <table class="table" >
+        <thead>
+            <th>id</th>
+            <th>Title</th>
+            <th>Release Date</th>
+            <th>actions</th>
+        </thead>
+            {% for show in shows %}  
+        <tr>
+          <td>{{show.id}}</td>
+          <td>{{show.title}}</td>
+          <td>{{show.release_date| date:'m-Y'}}</td>
+          <td><a href="shows/{{show.id}} ">Show</a> |  <a href="shows/edit/{{show.id}}">Edit</a> | <a href="/delete_show/{{show.id}}">Delete</a> </td> 
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="shows/new">Add a new Show</a>
+</body>
+</html>

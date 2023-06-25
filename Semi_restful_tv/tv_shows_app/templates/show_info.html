@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show info</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <h4><a href="/shows">Back</a></h4>
+    <h1>TV Show {{show.id}} </h1>
+    <h4>Title: {{show.title}} </h4>
+    <h4>Network: {{show.network}} </h4>
+    <h4>Release Date: {{show.release_date| date:'Y'}} </h4>
+
+    <p> Last updated {{show.updated_at}} </p>
+    <a href="shows/edit/edit_show/{{show.id}}">Edit</a> | <a href="/delete_show/{{show.id}}">Delete</a> 
+
+</body>
+</html>
