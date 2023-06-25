@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{course.name}} </title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <h4>{{course.name}} </h4>
+    <h5>{{course.description.content}} </h5>
+    <form method="POST" action="/comments/{{ course.id }}/add_comment" >
+        {% csrf_token %}
+    <div class="form-floating">
+        <textarea class="form-control"  name="content" style="height: 100px; width: 400px" required></textarea>
+        <label for="floatingTextarea">Your comment</label>
+      </div>
+    <div>
+        <input type="submit" value="Submit" class="d-flex">
+    </div>
+    </form>
+
+    {% for comment in course.comments.all %}
+    <ul class="list-group">
+        <li class="list-group-item">{{comment.content}} </li>
+      </ul>
+    {% endfor %}
+
+   
+</div>
+
+</body>
+</html>

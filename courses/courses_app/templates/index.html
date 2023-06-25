@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <h3>Add new course</h3>
+    <div class="d-flex justify-content-center  ">
+    <form method="POST" action="add_course" >
+        {% csrf_token %}
+        <div class="mb-3">
+          <label  class="form-label">Name</label>
+          <input type="text" class="form-control" name="name" style="height: 30px; width: 400px" required>
+        </div>
+    <div class="form-floating">
+        <textarea class="form-control"  name="description" style="height: 100px; width: 400px" required></textarea>
+        <label for="floatingTextarea">Description</label>
+      </div>
+    <div>
+        <input type="submit" value="Submit" class="d-flex">
+    </div>
+    </form>
+</div>
+        {% if messages %}
+        <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} {% endif %}>{{ message }}</li>    
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <h3>Courses</h3>
+    <table class="table mb-6">
+        <thead>
+            <th>Course Name</th>
+            <th>Description</th>
+            <th>Date Added</th>
+            <th>Actions</th>
+        </thead>
+        <tr>
+            {% for course in courses %}
+            <td>{{course.name}} </td>
+            <td>{{course.description.content}} </td>
+            <td>{{course.created_at |date:'Y-m-d'}} </td>
+            <td><a href="remove_course/{{course.id}}">Remove</a>  |   <a href="comments/{{course.id}} ">Add Comment</a></td>
+        </tr>
+            {% endfor %}
+    </table>
+
+</body>
+</html>
