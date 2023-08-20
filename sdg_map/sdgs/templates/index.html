@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+</head>
+    <style>
+        
+    </style>
+<body>
+    <div class="container mt-6">
+        <div class="row md-6 ">
+            <div class="col-md-8">
+                <div class="card  mb-3 ">
+                    <h2 class="card-header text-center">Add intervention Details</h2>
+                    <div class="card-body">
+                     <form method="post" action="{% url 'add' %}">
+                    {% csrf_token %}
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label for="id_Project_name">Project name:</label>
+                                    <input type="text" id="id_Project_name" name="Project_name" class="form-control" required>
+                                </td>
+                                <td>
+                                    <label for="id_area">Area:</label>
+                                    <input type="text" id="id_area" name="area" class="form-control" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="id_partner_name">Partner name:</label>
+                                    <input type="text" id="id_partner_name" name="partner_name" class="form-control" required>
+                                </td>
+                                <td>
+                                    <label for="id_sdg">SDGs:</label>
+                                    <input type="text" id="id_sdg" name="sdg" class="form-control" placeholder="seperate multiples with ," required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="id_longitude">Longitude:</label>
+                                    <input type="text" id="id_longitude" name="longitude" class="form-control" required  placeholder="Drag the marker to location">
+                                </td>
+                                <td>
+                                    <label for="id_latitude">Latitude:</label>
+                                    <input type="text" id="id_latitude" name="latitude" class="form-control" required  placeholder="Drag the marker to location">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="map" style="height: 300px;"></div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+               </div>
+            </div>
+            </div>
+            <div class="col md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title text-center">Interventions list</h5>
+                    </div>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Partner</th>
+                        <th scope="col">Area</th>
+                        <th scope="col">SDGs</th>
+                        <th>action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for point in points %}
+                      <tr>
+                        <td>{{point.Project_name}}</td>
+                        <td>{{point.partner_name}}</td>
+                        <td>{{point.area}}</td>
+                        <td>{{point.sdgs}}</td>
+                        <td>
+                            <a href="{% url 'delete_point' point.id %}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  {% if points %}
+                  <div>
+                  <a href="{% url 'download_csv' %}" class="btn btn-primary btn-block mb-3 float-end">
+                    <i class="bi bi-download"></i> Download 
+                </a>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <table>
+
+    </table>
+
+
+
+
+    <script>
+        var map = L.map('map').setView([31.781882156411047, 35.21667480468751], 8);  // Set initial map view
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: false
+        }).addTo(map);
+    
+        var marker = L.marker([31.781882156411047, 35.21667480468751], { draggable: true }).addTo(map);
+    
+        marker.on('dragend', function(event) {
+            var latlng = marker.getLatLng();
+            document.getElementById('id_longitude').value = latlng.lng.toFixed(9);
+            document.getElementById('id_latitude').value = latlng.lat.toFixed(9);
+        });
+    </script>
+</body>
+</html>
